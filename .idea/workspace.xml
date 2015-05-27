@@ -1,35 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="17cc4db9-ddf5-4c7d-82f9-7683b9e8dba0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/Lock.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/Lock.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/background.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/background.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/close.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/loading.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/loading.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/next.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/next.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/user.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/texture/user.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/org/json/README" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/org/json/zip/README" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/com/mcgoodtime/gtgames/resources/ResourcesManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/libs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="DELETED" beforePath="F:\Work\JAVA Project\GoodTime-Games\src\com\mcgoodtime\gtgames\client\gui\img\close.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GoodTime-Games.iml" afterPath="$PROJECT_DIR$/GoodTime-Games.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mcgoodtime/gtgames/client/gui/MainFrame.java" afterPath="$PROJECT_DIR$/src/com/mcgoodtime/gtgames/client/gui/MainFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mcgoodtime/gtgames/client/gui/MainPanel.java" afterPath="$PROJECT_DIR$/src/com/mcgoodtime/gtgames/client/gui/MainPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="F:\Work\JAVA Project\GoodTime-Games\bin\com\mcgoodtime\gtgames\client\gui\img\close.jpg" afterPath="$PROJECT_DIR$/out/production/GoodTime-Games/com/mcgoodtime/gtgames/resources/texture/close.png" />
-    </list>
+    <list default="true" id="17cc4db9-ddf5-4c7d-82f9-7683b9e8dba0" name="Default" comment="" />
     <ignored path="GoodTime-Games.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -585,12 +557,19 @@
       <workItem from="1432650160200" duration="2296000" />
       <workItem from="1432703481347" duration="3581000" />
       <workItem from="1432721026439" duration="1528000" />
-      <workItem from="1432722566423" duration="3256000" />
+      <workItem from="1432722566423" duration="3280000" />
     </task>
+    <task id="LOCAL-00001" summary="Big change">
+      <created>1432727294771</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1432727294771</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15194000" />
+    <option name="totallyTimeSpent" value="15218000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -632,6 +611,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Big change" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big change" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

@@ -1,31 +1,28 @@
 package com.mcgoodtime.gtgames.client.gui;
 
-import java.awt.EventQueue;
+import com.mcgoodtime.gtgames.core.Auth;
+import com.mcgoodtime.gtgames.resources.ResourcesManager;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 
-import javax.swing.JLabel;
+import com.mcgoodtime.gtgames.client.panel.LoginPanel;
+import com.mcgoodtime.gtgames.client.panel.MainPanel;
 
 public class MainFrame extends JFrame {
 
-	private MainPanel mainPane;
-	private JPanel container;
-	
-	private Icon iconClose;
+	private static MainPanel mainPanel;
+	private static JPanel container;
+	public static JPanel containerLogin;
+
+	private static JLabel labLogin;
+	private static JLabel labLoginState;
 	
 	int mx, my, fx, fy;
 
@@ -49,24 +46,42 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		/* ***********÷˜»›∆˜************ */
+		/* ***********main Window************ */
 		setUndecorated(true);
 		setTitle("GoodTime Games");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 450);
-		mainPane = new MainPanel();
-		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(mainPane);
-		mainPane.setLayout(null);
+		mainPanel = new MainPanel();
+		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(mainPanel);
+		mainPanel.setLayout(null);
 		
-		mainPane.addMouseMotionListener(new MouseMotionAdapter() {
+		//change Look And Feel
+		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
+		try {
+			UIManager.setLookAndFeel(lookAndFeel);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
+		//title panel
+		JPanel titlePanel = new JPanel();
+
+		
+		mainPanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
-				setLocation(fx + (arg0.getXOnScreen() - mx), fy + (arg0.getYOnScreen() - my));//…Ë÷√Œª÷√£®“∆∂Ø£©
+				setLocation(fx + (arg0.getXOnScreen() - mx), fy + (arg0.getYOnScreen() - my));//Èº†Ê†áÊãñÊãΩ
 			}
 		});
-		//ÃÌº” Û±Íº‡Ã˝£¨ªÒ»° Û±Í“∆∂Ø◊¯±Í
-		mainPane.addMouseListener(new MouseAdapter() {
+		//Èº†Ê†áÊãñ‰ΩèÁõëÂê¨
+		mainPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				mx = arg0.getXOnScreen();
@@ -76,33 +91,126 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		String closetp = this.getClass().getResource("img/close.jpg").getPath();//ªÒ»°icon¬∑æ∂
-		ImageIcon imaClose = new ImageIcon(closetp);
-		JLabel labClose = new JLabel(imaClose);
-		labClose.setBounds(681, 0, imaClose.getIconWidth(), imaClose.getIconHeight());
-		//ÃÌº” Û±Íµ„ª˜ ¬º˛
+		/*  All Items */
+		
+		// close button
+		ImageIcon iconClose = new ImageIcon(ResourcesManager.getTexture("close.png")); //get icon
+		JLabel labClose = new JLabel(iconClose);
+		labClose.setBounds(670, 0, 30, 30);
+		//ÂçïÊú∫‰∫ã‰ª∂
 		labClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				System.exit(0);
 			}
 		});
-		
-		/* *************************** */
-		
-		/* **********container******* */
-		container = new JPanel();
-		container.setBounds(0, 30, 700, 420);
-		container.setLayout(null);
-		/* ************************** */
-		
-		//œÚ÷˜»›∆˜ÃÌº”
-		mainPane.add(labClose);
-		mainPane.add(container);
-		
-		
+				
+		//add item to main pane
+		mainPanel.add(labClose);
+
+		LoginPage lp = new LoginPage();
 		
 	}
 	
+	static class LoginPage {
+		public LoginPage() {
+			/* Auth Container */
+			containerLogin = new LoginPanel();
+			containerLogin.setBounds(2, 30, 696, 418);
+			containerLogin.setLayout(null);
+			mainPanel.add(containerLogin);
+			/* *************** */
+			
+			/* **** text **** */
+			final JTextField textUsername = new JTextField();
+			textUsername.setFont(new Font("ÂæÆËΩØÈõÖÈªë", Font.PLAIN, 12));
+			textUsername.setBounds(containerLogin.getWidth() / 2 - 100, containerLogin.getHeight() / 2 - 80, 200, 30);
 
+			final JPasswordField textPassword = new JPasswordField();
+			textPassword.setFont(new Font("ÂæÆËΩØÈõÖÈªë", Font.PLAIN, 12));
+			textPassword.setBounds(containerLogin.getWidth() / 2 - 100, containerLogin.getHeight() / 2 - 40, 200, 30);
+
+			/* **** button **** */
+			//login
+			ImageIcon iconLogin = new ImageIcon(ResourcesManager.getTexture("next.png")); //get icon
+			labLogin = new JLabel(iconLogin);
+			labLogin.setBounds(containerLogin.getWidth() / 2 + 80, containerLogin.getHeight() / 2 - 95, 100, 100);
+
+			labLogin.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					String textUsernameText = textUsername.getText();
+
+					if (!textUsernameText.isEmpty()) {
+						char[] password = textPassword.getPassword();
+						if (password.length < 1) {
+							labLoginState.setForeground(Color.RED);
+							labLoginState.setText("ËØ∑ËæìÂÖ•Ê≠£Á°ÆÁöÑÂØÜÁ†Å");
+						} else {
+							//auth
+							ImageIcon iconSignUp = new ImageIcon(ResourcesManager.getTexture("loading.gif")); //get icon
+							labLoginState.setIcon(iconSignUp);
+							labLoginState.setText("Ê≠£Âú®ËøûÊé•ÁôªÈôÜÊúçÂä°Âô®...");
+
+							boolean loginServerState = Auth.getLoginServerState(); //get Server State(WIP)
+							if (loginServerState) {
+								/*
+								 * Login, if return true, hide the login page,go to next.
+								 */
+								boolean login = Auth.Login(textUsernameText, password);
+								if (login) {
+									//login success, go to main page
+									containerLogin.setVisible(false);
+									containerLogin.setBounds(0, 0, 0, 0);
+									mainPanel.remove(containerLogin); //disable login page.
+									MainPage mp = new MainPage();// go to next.
+								} else {
+									textPassword.setText(null);
+								}
+							}
+						}
+					} else {
+						labLoginState.setForeground(Color.RED);
+						labLoginState.setText("ËØ∑ËæìÂÖ•Ê≠£Á°ÆÁöÑÁî®Êà∑Âêç");
+					}
+				}
+			});
+
+			//login state
+			labLoginState = new JLabel();
+			labLoginState.setFont(new Font("ÂæÆËΩØÈõÖÈªë", Font.PLAIN, 12));
+			labLoginState.setBounds(containerLogin.getWidth() / 2 - 100, containerLogin.getHeight() / 2, 200, 20);
+
+
+			//add item to login page
+			containerLogin.add(textUsername);
+			containerLogin.add(textPassword);
+
+			containerLogin.add(labLogin);
+			containerLogin.add(labLoginState);
+		}
+	}
+
+	static class MainPage {
+		public MainPage() {
+
+			/* **********container******* */
+			container = new JPanel();
+			container.setBounds(2, 30, 696, 418);
+			container.setLayout(null);
+			mainPanel.add(container);
+			/* ************************** */
+
+			//launch button
+			JButton launch = new JButton("ÂêØÂä®ÂÆ¢Êà∑Á´Ø");
+			launch.setFont(new Font("ÂæÆËΩØÈõÖÈªë", Font.PLAIN, 12));
+			launch.setBounds(520, 350, 150, 50);
+			/* =========================== */
+
+			//add item to container
+			container.add(launch);
+		}
+	}
 }
+
+

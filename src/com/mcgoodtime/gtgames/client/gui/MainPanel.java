@@ -4,13 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
-import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel implements ImageObserver {
@@ -32,17 +28,17 @@ public class MainPanel extends JPanel implements ImageObserver {
 
 	@Override
 	protected void paintComponent(Graphics arg0) {
-		Graphics2D g2d = (Graphics2D) arg0;//Ç¿ÖÆ°ÑGraphics×ª»»
+		Graphics2D g2d = (Graphics2D) arg0;//å¼ºåˆ¶æŠŠGraphicsè½¬æ¢
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		g2d.setColor(new Color(0, 0, 0));//ÉèÖÃÑÕÉ«
+		g2d.setColor(new Color(0, 0, 0));//è®¾ç½®é¢œè‰²
 		g2d.setClip(0, 0, getWidth(), 30);
-		g2d.fillRect(0, 0, getWidth(), getHeight());//Ìî³ä
+		g2d.fillRect(0, 0, getWidth(), getHeight());//å¡«å……
 		g2d.setClip(null);
 		
-		g2d.setColor(Color.WHITE);//ÉèÖÃÑÕÉ«
-		g2d.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 15));//ÉèÖÃ×ÖÌå
-		g2d.drawString("GoodTimeÓÎÏ·Æ½Ì¨", 20, 20);//»æÖÆ×Ö·û´®
+		g2d.setColor(Color.WHITE);//è®¾ç½®é¢œè‰²
+		g2d.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));//è®¾ç½®å­—ä½“
+		g2d.drawString("GoodTimeæ¸¸æˆå¹³å°", 20, 20);//ç»˜åˆ¶å­—ç¬¦ä¸²
 
 
 	}

@@ -11,26 +11,7 @@ import java.awt.image.ImageObserver;
 
 import javax.swing.JPanel;
 
-public class MainPanel extends JPanel implements ImageObserver {
-
-	@Override
-	public void print(Graphics arg0) {
-		super.print(arg0);
-	}
-
-	@Override
-	protected void paintBorder(Graphics arg0) {
-		Graphics2D g2d = (Graphics2D) arg0;
-		g2d.setColor(Color.black);
-		Stroke s = new BasicStroke(3);
-		g2d.setStroke(s);
-		g2d.drawRect(0, 0, getWidth()-1, getHeight()-1);
-	}
-
-	@Override
-	protected void paintChildren(Graphics arg0) {
-		super.paintChildren(arg0);
-	}
+public class TitlePanel extends JPanel implements ImageObserver {
 
 	@Override
 	protected void paintComponent(Graphics arg0) {
@@ -48,5 +29,4 @@ public class MainPanel extends JPanel implements ImageObserver {
 
 
 	}
-	
 }

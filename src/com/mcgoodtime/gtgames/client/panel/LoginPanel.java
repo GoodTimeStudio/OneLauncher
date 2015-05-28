@@ -36,7 +36,7 @@ public class LoginPanel extends JPanel {
 		}
 		g2d.drawImage(imageUser, MainFrame.containerLogin.getWidth() / 2 - 150, MainFrame.containerLogin.getHeight() / 2 - 90, null);
 
-		InputStream inPassWord = ResourcesManager.getTextureAsStream("Lock.png");
+		InputStream inPassWord = ResourcesManager.getTextureAsStream("lock.png");
 		BufferedImage imagePassword = null;
 		try {
 			imagePassword = ImageIO.read(inPassWord);
@@ -53,17 +53,5 @@ public class LoginPanel extends JPanel {
 		g2d.setFont(new Font("微软雅黑", Font.PLAIN, 15));
 		g2d.drawString("您需要登陆后才能进行游戏", 50, 70);
 	}
-
-	@Override
-	protected void paintChildren(Graphics g) {
-		super.paintChildren(g);
-	}
-
-	@Override
-	protected void paintBorder(Graphics g) {
-		super.paintBorder(g);
-	}
-	
-	
 
 }

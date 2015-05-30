@@ -1,7 +1,5 @@
 package com.mcgoodtime.gtgames.client.gui;
 
-import com.mcgoodtime.gtgames.client.panel.NotePanel;
-import com.mcgoodtime.gtgames.client.panel.SettingPanel;
 import com.mcgoodtime.gtgames.core.Auth;
 import com.mcgoodtime.gtgames.resources.ResourcesManager;
 
@@ -17,13 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.mcgoodtime.gtgames.client.panel.LoginPanel;
-import com.mcgoodtime.gtgames.client.panel.TitlePanel;
 
 public class MainFrame extends JFrame {
 
-	private static JPanel mainPanel;
+	protected static JPanel mainPanel;
 	private static JPanel container;
 	public static JPanel containerLogin;
+
 
 	private static JLabel labLogin;
 	private static JLabel labLoginState;
@@ -83,7 +81,23 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}
 
-		TitlePanel title = new TitlePanel();
+		JPanel title = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics arg0) {
+				super.paintComponent(arg0);
+				Graphics2D g2d = (Graphics2D) arg0;//Graphics2D
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				g2d.setColor(Color.black);//draw bar
+				g2d.setClip(0, 0, getWidth(), 30);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.setClip(null);
+
+				g2d.setColor(Color.WHITE);//set color
+				g2d.setFont(new Font("微软雅黑", Font.PLAIN, 15));//set font
+				g2d.drawString("GoodTime游戏平台", 20, 20);//draw title
+			}
+		};
 		title.setBounds(0, 0, getWidth(), 30);
 
 		title.addMouseMotionListener(new MouseMotionAdapter() {
@@ -121,10 +135,10 @@ public class MainFrame extends JFrame {
 		mainPanel.add(labClose);
 		mainPanel.add(title);
 
-		LoginPage lp = new LoginPage();
+		new LoginPage();
 		
 	}
-	
+
 	static class LoginPage {
 		private static JTextField textUsername;
 		private static JPasswordField textPassword;
@@ -213,7 +227,6 @@ public class MainFrame extends JFrame {
 						if (login) {
 							//login success, go to main page
 							containerLogin.setVisible(false);
-							containerLogin.setBounds(0, 0, 0, 0);
 							mainPanel.remove(containerLogin); //disable login page.
 							new MainPage();// go to next.
 						} else {
@@ -235,6 +248,7 @@ public class MainFrame extends JFrame {
 			container = new JPanel() {
 				@Override
 				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
 					Graphics2D g2d = (Graphics2D) g;
 					InputStream inMainBackground = ResourcesManager.getTextureAsStream("mainBackground.png");
 					BufferedImage imageMainBackground = null;
@@ -252,9 +266,20 @@ public class MainFrame extends JFrame {
 			mainPanel.add(container);
 			/* ************************** */
 
-			//Notes Panel
-			NotePanel notePanel = new NotePanel();
-			notePanel.setBounds(10, 10, container.getWidth() - 20, 200 - 10);
+			/* Notes Panel */
+			JEditorPane notePanel = new JEditorPane() {
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					Graphics2D g2d = (Graphics2D) g;
+
+					g2d.setColor(new Color(255, 255, 255, 75));
+					g2d.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
+
+					super.paintComponent(g);
+				}
+			};
+			notePanel.setBounds(0, 0, 200, container.getHeight() - 81);
 			notePanel.setEditable(false);
 			notePanel.setOpaque(false);
 
@@ -263,57 +288,137 @@ public class MainFrame extends JFrame {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			/* ========Note Panel=========*/
+
+			/* Server Panel */
+			JPanel containerServers = new JPanel() {
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					Graphics2D g2d = (Graphics2D) g;
+
+					g2d.setColor(new Color(255, 255, 255, 75));
+					g2d.fillRect(0, 0, getWidth(), getHeight());
+				}
+			};
+			containerServers.setBounds(container.getWidth() - 200, 0, 200, container.getHeight());
+			containerServers.setOpaque(false);
+			containerServers.setLayout(null);
+			/* =============== */
 
 			/* button */
-
 			//launch button
 			ImageIcon iconLaunch = new ImageIcon(ResourcesManager.getTexture("next.png"));
 			JLabel labLaunch = new JLabel(iconLaunch);
 			labLaunch.setToolTipText("启动客户端");
-			labLaunch.setBounds(container.getWidth() - 60, container.getHeight() - 60, 50, 50);
+			labLaunch.setBounds(containerServers.getWidth() - 60, containerServers.getHeight() - 65, 50, 50);
 
 			//setting button
 			ImageIcon iconSetting = new ImageIcon(ResourcesManager.getTexture("setting.png"));
 			JLabel labSetting = new JLabel(iconSetting);
 			labSetting.setToolTipText("设置");
-			labSetting.setBounds(container.getWidth() - 120, container.getHeight() - 60, 50, 50);
+			labSetting.setBounds(containerServers.getWidth() - 120, containerServers.getHeight() - 65, 50, 50);
 			labSetting.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							try {
-								Setting dialog = new Setting();
-								dialog.setVisible(true);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});
+					container.setVisible(false);
+					new SettingPage();
 				}
 			});
 
-			/* =========================== */
+			//add item to container Servers
+			containerServers.add(labLaunch);
+			containerServers.add(labSetting);
+
+			/* ======Server Panel======= */
+
+
+			/* Info Panel */
+			JPanel infoPanel = new JPanel() {
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					Graphics2D g2d = (Graphics2D) g;
+
+					g2d.setColor(new Color(64, 64, 64, 150));
+					g2d.fillRect(0, 0, getWidth(), getHeight());
+				}
+			};
+			infoPanel.setBounds(0, container.getHeight() - 80, container.getWidth() - 200, 80);
+			infoPanel.setOpaque(false);
+			infoPanel.setLayout(null);
+
+			/* label */
+
+			//user photo
+			JLabel labUserPhoto = new JLabel();
+			labUserPhoto.setBounds(0, 0, 80, 80);
+			InputStream inUserPhoto = ResourcesManager.getTextureAsStream("steve.png");
+			BufferedImage imageUserPhoto = null;
+			try {
+				imageUserPhoto = ImageIO.read(inUserPhoto);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			ImageIcon iconUserPhoto = new ImageIcon(imageUserPhoto.getScaledInstance(80, 80, Image.SCALE_SMOOTH)); //change icon size.
+			labUserPhoto.setIcon(iconUserPhoto);
+
+			//add item to info panel
+			infoPanel.add(labUserPhoto);
+
+			/* ====info panel===== */
 
 			//add item to container
 			container.add(notePanel);
-
-			container.add(labLaunch);
-			container.add(labSetting);
+			container.add(infoPanel);
+			container.add(containerServers);
 		}
 	}
 
-	static class Setting extends JDialog {
-		public Setting() {
-			/* Setting Window */
-			setUndecorated(true);
-			setTitle("GoodTime Games Setting");
-			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 500, 300);
-			SettingPanel setting = new SettingPanel();
-			setting.setBorder(new EmptyBorder(5, 5, 5, 5));
-			setContentPane(setting);
-			setting.setLayout(null);
+	static class SettingPage {
+		public SettingPage() {
+			final JPanel containerSetting = new JPanel() {
+				@Override
+				protected void paintComponent(Graphics arg0) {
+					super.paintComponent(arg0);
+					Graphics2D g2d = (Graphics2D) arg0;//Graphics2D
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                	/* draw String */
+					g2d.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+					g2d.drawString("设置", 50, 50);
+
+					g2d.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+					g2d.drawString("更改启动设置和平台设置（高级功能，如非必要，请勿修改）", 50, 70);
+				}
+			};
+			containerSetting.setBounds(2, 30, 696, 418);
+			containerSetting.setLayout(null);
+			mainPanel.add(containerSetting);
+
+			/* button */
+			//save option
+			ImageIcon iconSave = new ImageIcon(ResourcesManager.getTexture("save.png"));
+			JLabel labSave = new JLabel(iconSave);
+			labSave.setBounds(containerSetting.getWidth() - 60, containerSetting.getHeight() - 60, 50, 50);
+			labSave.setToolTipText("保存设置");
+
+			//cancel button
+			ImageIcon iconCancel = new ImageIcon(ResourcesManager.getTexture("cancel.png"));
+			JLabel labCancel = new JLabel(iconCancel);
+			labCancel.setBounds(containerSetting.getWidth() - 120, containerSetting.getHeight() - 60, 50, 50);
+			labCancel.setToolTipText("取消并返回");
+			labCancel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					containerSetting.setVisible(false);
+					container.setVisible(true);
+					mainPanel.remove(containerSetting);
+				}
+			});
+
+			//add item to container Setting
+			containerSetting.add(labSave);
+			containerSetting.add(labCancel);
 		}
 	}
 }

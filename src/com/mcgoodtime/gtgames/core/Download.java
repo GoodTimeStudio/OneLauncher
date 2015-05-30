@@ -66,8 +66,6 @@ public class Download {
                 } else
                     break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

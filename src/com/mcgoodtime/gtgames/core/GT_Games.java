@@ -4,9 +4,8 @@ import javax.swing.*;
 
 public class GT_Games extends JFrame {
 
-    public static final GT_Games mainWin = new GT_Games();
-    public static final int ver = 1;
-    public static final String verName = "0.1";
+    public static final int VERSION_ID = 1;
+    public static final String VERSION = "0.1";
 
     protected static String latestVerName;
 

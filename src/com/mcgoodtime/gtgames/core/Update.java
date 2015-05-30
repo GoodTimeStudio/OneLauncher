@@ -22,7 +22,7 @@ public class Update {
         //获取jsonObject中的ver
         int ver = jsonObject.getInt("ver");
         //判断最新版本是否大于目前版本
-        b = ver > GT_Games.ver;
+        b = ver > GT_Games.VERSION_ID;
 
         if (b) {
             String verName = jsonObject.getString("verName");

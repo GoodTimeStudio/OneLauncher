@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
 	protected static JPanel mainPanel;
 	private static JPanel container;
 	public static JPanel containerLogin;
+	private static JEditorPane notePanel;
 
 
 	private static JLabel labLogin;
@@ -267,7 +268,7 @@ public class MainFrame extends JFrame {
 			/* ************************** */
 
 			/* Notes Panel */
-			JEditorPane notePanel = new JEditorPane() {
+			notePanel = new JEditorPane() {
 				@Override
 				protected void paintComponent(Graphics g) {
 					super.paintComponent(g);
@@ -283,11 +284,16 @@ public class MainFrame extends JFrame {
 			notePanel.setEditable(false);
 			notePanel.setOpaque(false);
 
-			try {
-				notePanel.setPage("http://minecraft-goodtime.github.io/UpdateNotes/MinecraftGoodTime.html");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						notePanel.setPage("http://minecraft-goodtime.github.io/UpdateNotes/MinecraftGoodTime.html"); //get page to note
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
 			/* ========Note Panel=========*/
 
 			/* Server Panel */

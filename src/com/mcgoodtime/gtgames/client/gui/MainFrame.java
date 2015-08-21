@@ -1,30 +1,25 @@
 package com.mcgoodtime.gtgames.client.gui;
 
+import com.mcgoodtime.gtgames.client.ResourcesManager;
+import com.mcgoodtime.gtgames.client.panel.LoginPanel;
 import com.mcgoodtime.gtgames.core.Auth;
-import com.mcgoodtime.gtgames.resources.ResourcesManager;
-
-import java.awt.*;
-import java.awt.event.*;
-
+import com.mcgoodtime.gtgames.core.GT_Games;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.mcgoodtime.gtgames.client.panel.LoginPanel;
 
 public class MainFrame extends JFrame {
 
 	protected static JPanel mainPanel;
 	private static JPanel container;
 	public static JPanel containerLogin;
-	private static JEditorPane notePanel;
 
 
-	private static JLabel labLogin;
 	private static JLabel labLoginState;
 	
 	int mx, my, fx, fy;
@@ -32,7 +27,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void initGui() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -45,14 +40,14 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	/**
+	/*
 	 * Create the frame.
 	 */
 	public MainFrame() {
 		/* ***********main Window************ */
 		setUndecorated(true);
-		setTitle("GoodTime Games");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("MechGear Games");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 450);
 		mainPanel = new JPanel() {
 			@Override
@@ -72,13 +67,7 @@ public class MainFrame extends JFrame {
 		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
 		try {
 			UIManager.setLookAndFeel(lookAndFeel);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 
@@ -89,14 +78,14 @@ public class MainFrame extends JFrame {
 				Graphics2D g2d = (Graphics2D) arg0;//Graphics2D
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-				g2d.setColor(Color.black);//draw bar
+				g2d.setColor(new Color(0, 205, 205));//draw bar
 				g2d.setClip(0, 0, getWidth(), 30);
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.setClip(null);
 
 				g2d.setColor(Color.WHITE);//set color
 				g2d.setFont(new Font("微软雅黑", Font.PLAIN, 15));//set font
-				g2d.drawString("GoodTime游戏平台", 20, 20);//draw title
+				g2d.drawString("MechGear游戏平台", 20, 20);//draw title
 			}
 		};
 		title.setBounds(0, 0, getWidth(), 30);
@@ -121,7 +110,7 @@ public class MainFrame extends JFrame {
 		/*  All Items */
 		
 		// close button
-		ImageIcon iconClose = new ImageIcon(ResourcesManager.getTexture("close.png")); //get icon
+		ImageIcon iconClose = new ImageIcon(ResourcesManager.getTexture(ResourcesManager.TextureNames.close.name() + ".png")); //get icon
 		JLabel labClose = new JLabel(iconClose);
 		labClose.setBounds(670, 0, 30, 30);
 		//单机事件
@@ -136,8 +125,8 @@ public class MainFrame extends JFrame {
 		mainPanel.add(labClose);
 		mainPanel.add(title);
 
-		new LoginPage();
-		
+		//new LoginPage();
+		new MainPage();
 	}
 
 	static class LoginPage {
@@ -180,7 +169,7 @@ public class MainFrame extends JFrame {
 			/* **** button **** */
 			//login
 			ImageIcon iconLogin = new ImageIcon(ResourcesManager.getTexture("next.png")); //get icon
-			labLogin = new JLabel(iconLogin);
+			JLabel labLogin = new JLabel(iconLogin);
 			labLogin.setToolTipText("登陆");
 			labLogin.setBounds(containerLogin.getWidth() / 2 + 80, containerLogin.getHeight() / 2 - 95, 100, 100);
 
@@ -219,21 +208,14 @@ public class MainFrame extends JFrame {
 					labLoginState.setIcon(iconSignUp);
 					labLoginState.setText("正在连接登陆服务器...");
 
-					boolean loginServerState = Auth.getLoginServerState(); //get Server State(WIP)
-					if (loginServerState) {
-								/*
-								 * Login, if return true, hide the login page,go to next.
-								 */
-						boolean login = Auth.Login(textUsernameText, password);
-						if (login) {
-							//login success, go to main page
-							containerLogin.setVisible(false);
-							mainPanel.remove(containerLogin); //disable login page.
-							new MainPage();// go to next.
-						} else {
-							textPassword.setText(null);
-						}
-					}
+					/*
+                    * Login, if return true, hide the login page,go to next.
+                    */
+					//login success, go to main page
+					containerLogin.setVisible(false);
+					mainPanel.remove(containerLogin); //disable login page.
+					Auth.setUsername(textUsernameText);
+					new MainPage();// go to next.
 				}
 			} else {
 				labLoginState.setForeground(Color.RED);
@@ -267,78 +249,6 @@ public class MainFrame extends JFrame {
 			mainPanel.add(container);
 			/* ************************** */
 
-			/* Notes Panel */
-			notePanel = new JEditorPane() {
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					Graphics2D g2d = (Graphics2D) g;
-
-					g2d.setColor(new Color(255, 255, 255, 75));
-					g2d.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
-
-					super.paintComponent(g);
-				}
-			};
-			notePanel.setBounds(0, 0, 200, container.getHeight() - 81);
-			notePanel.setEditable(false);
-			notePanel.setOpaque(false);
-
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						notePanel.setPage("http://minecraft-goodtime.github.io/UpdateNotes/MinecraftGoodTime.html"); //get page to note
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-
-			/* ========Note Panel=========*/
-
-			/* Server Panel */
-			JPanel containerServers = new JPanel() {
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					Graphics2D g2d = (Graphics2D) g;
-
-					g2d.setColor(new Color(255, 255, 255, 75));
-					g2d.fillRect(0, 0, getWidth(), getHeight());
-				}
-			};
-			containerServers.setBounds(container.getWidth() - 200, 0, 200, container.getHeight());
-			containerServers.setOpaque(false);
-			containerServers.setLayout(null);
-			/* =============== */
-
-			/* button */
-			//launch button
-			ImageIcon iconLaunch = new ImageIcon(ResourcesManager.getTexture("next.png"));
-			JLabel labLaunch = new JLabel(iconLaunch);
-			labLaunch.setToolTipText("启动客户端");
-			labLaunch.setBounds(containerServers.getWidth() - 60, containerServers.getHeight() - 65, 50, 50);
-
-			//setting button
-			ImageIcon iconSetting = new ImageIcon(ResourcesManager.getTexture("setting.png"));
-			JLabel labSetting = new JLabel(iconSetting);
-			labSetting.setToolTipText("设置");
-			labSetting.setBounds(containerServers.getWidth() - 120, containerServers.getHeight() - 65, 50, 50);
-			labSetting.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					container.setVisible(false);
-					new SettingPage();
-				}
-			});
-
-			//add item to container Servers
-			containerServers.add(labLaunch);
-			containerServers.add(labSetting);
-
-			/* ======Server Panel======= */
-
-
 			/* Info Panel */
 			JPanel infoPanel = new JPanel() {
 				@Override
@@ -350,7 +260,7 @@ public class MainFrame extends JFrame {
 					g2d.fillRect(0, 0, getWidth(), getHeight());
 				}
 			};
-			infoPanel.setBounds(0, container.getHeight() - 80, container.getWidth() - 200, 80);
+			infoPanel.setBounds(0, container.getHeight() - 80, container.getWidth(), 80);
 			infoPanel.setOpaque(false);
 			infoPanel.setLayout(null);
 
@@ -366,18 +276,49 @@ public class MainFrame extends JFrame {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			ImageIcon iconUserPhoto = new ImageIcon(imageUserPhoto.getScaledInstance(80, 80, Image.SCALE_SMOOTH)); //change icon size.
+			ImageIcon iconUserPhoto = null; //change icon size.
+			if (imageUserPhoto != null) {
+				iconUserPhoto = new ImageIcon(imageUserPhoto.getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+			}
 			labUserPhoto.setIcon(iconUserPhoto);
+
+			//user info
+			JLabel labUserInfo = new JLabel();
+			labUserInfo.setText(GT_Games.getHelloWord() + "," + "尊敬的" + Auth.getUsername());
+			labUserInfo.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+			labUserInfo.setBounds(90, 0, 150, 30);
+
+			/* button */
+			//launch button
+			ImageIcon iconLaunch = new ImageIcon(ResourcesManager.getTexture("next.png"));
+			JLabel labLaunch = new JLabel(iconLaunch);
+			labLaunch.setToolTipText("启动客户端");
+			labLaunch.setBounds(infoPanel.getWidth() - 60, infoPanel.getHeight() - 65, 50, 50);
+
+			//setting button
+			ImageIcon iconSetting = new ImageIcon(ResourcesManager.getTexture("setting.png"));
+			JLabel labSetting = new JLabel(iconSetting);
+			labSetting.setToolTipText("设置");
+			labSetting.setBounds(infoPanel.getWidth() - 120, infoPanel.getHeight() - 65, 50, 50);
+			labSetting.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					container.setVisible(false);
+					new SettingPage();
+				}
+			});
 
 			//add item to info panel
 			infoPanel.add(labUserPhoto);
+			infoPanel.add(labUserInfo);
+
+			infoPanel.add(labLaunch);
+			infoPanel.add(labSetting);
 
 			/* ====info panel===== */
 
 			//add item to container
-			container.add(notePanel);
 			container.add(infoPanel);
-			container.add(containerServers);
 		}
 	}
 

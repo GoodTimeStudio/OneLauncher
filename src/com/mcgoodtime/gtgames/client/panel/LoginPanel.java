@@ -1,7 +1,7 @@
 package com.mcgoodtime.gtgames.client.panel;
 
+import com.mcgoodtime.gtgames.client.ResourcesManager;
 import com.mcgoodtime.gtgames.client.gui.MainFrame;
-import com.mcgoodtime.gtgames.resources.ResourcesManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

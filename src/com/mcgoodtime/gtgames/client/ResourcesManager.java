@@ -1,4 +1,4 @@
-package com.mcgoodtime.gtgames.resources;
+package com.mcgoodtime.gtgames.client;
 
 import java.io.InputStream;
 import java.net.URL;

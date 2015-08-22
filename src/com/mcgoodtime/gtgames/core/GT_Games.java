@@ -1,9 +1,9 @@
 package com.mcgoodtime.gtgames.core;
 
-import com.mcgoodtime.gtgames.client.gui.MainFrame;
+import com.mcgoodtime.gtgames.ResourcesManager;
+import com.mcgoodtime.gtgames.gui.MainWindow;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Calendar;
 
 public class GT_Games extends JFrame implements Runnable {
@@ -14,9 +14,10 @@ public class GT_Games extends JFrame implements Runnable {
     protected static String latestVerName;
 
     public static void main(String[] args) {
+        ResourcesManager.loadTexture();
         GT_Games games = new GT_Games();
         games.run();
-        /*
+/*
         GetVersionInfo thread  = new GetVersionInfo();
         thread.run();
 
@@ -47,6 +48,6 @@ public class GT_Games extends JFrame implements Runnable {
 
     @Override
     public void run() {
-        MainFrame.initGui();
+        MainWindow.initGui();
     }
 }

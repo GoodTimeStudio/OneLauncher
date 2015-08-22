@@ -61,3 +61,8 @@ $RECYCLE.BIN/
 out/
 .idea/
 .settings/
+.minecraft/
+
+*.log
+logs/
+asm/

@@ -2,7 +2,7 @@ package com.mcgoodtime.gtgames.core;
 
 public class Auth {
 
-    private static String username;
+    private static String username = "";
 
     //WIP
     public static boolean getLoginServerState() {

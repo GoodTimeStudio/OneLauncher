@@ -5,11 +5,22 @@ import com.mcgoodtime.gjmlc.core.LibrariesManager;
 import com.mcgoodtime.gtgames.ResourcesManager;
 import com.mcgoodtime.gtgames.core.Auth;
 import com.mcgoodtime.gtgames.core.GT_Games;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by suhao on 2015.8.22.0022.
@@ -19,6 +30,8 @@ import java.awt.event.MouseEvent;
 public class MainPanel {
 
     protected static JPanel container;
+
+    private static JPanel serverListPanel;
 
     public MainPanel() {
 
@@ -53,17 +66,20 @@ public class MainPanel {
         /* label */
 
         //user photo
-        JLabel labUserPhoto = new JLabel();
-        labUserPhoto.setBounds(0, 0, 80, 80);
+        JLabel labUserFace = new JLabel();
+        labUserFace.setBounds(0, 0, 80, 80);
         //change icon size.
-        EventQueue.invokeLater(new Runnable() {
+        //labUserFace.setIcon(new ImageIcon(ResourcesManager.steve));
+
+        Thread getUserFaceThread = new Thread() {
             @Override
             public void run() {
                 Image image = ResourcesManager.getImageFormURL("http://mcuuid.net/face/{player}.png".replace("{player}"
                         , Auth.getUsername())).getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-                labUserPhoto.setIcon(new ImageIcon(image));
+                labUserFace.setIcon(new ImageIcon(image));
             }
-        });
+        };
+        getUserFaceThread.start();
 
         //user info
         JLabel labUserInfo = new JLabel();
@@ -100,7 +116,7 @@ public class MainPanel {
         });
 
         //add item to info panel
-        infoPanel.add(labUserPhoto);
+        infoPanel.add(labUserFace);
         infoPanel.add(labUserInfo);
 
         infoPanel.add(labLaunch);
@@ -109,31 +125,57 @@ public class MainPanel {
         /* ====info panel===== */
 
         /* Server List */
-        JScrollPane serverListPanel = new JScrollPane();
-        serverListPanel.setBounds(container.getWidth() - 220, 0, 220, container.getHeight() - 80);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(container.getWidth() - 220, 0, 220, container.getHeight() - 80);
 
+        serverListPanel = new JPanel();
+        serverListPanel.setLayout(new FlowLayout());
+        scrollPane.setViewportView(serverListPanel);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        serverListPanel.setViewportView(panel);
+        Thread getServerListThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://mcgoodtime.com/mgl/server-list.json");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    InputStream in = connection.getInputStream();
+                    InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+                    BufferedReader br = new BufferedReader(isr);
 
-        ServerTile mg = new ServerTile("MechGear群组服务器", ResourcesManager.getImageFormURL("http://ww4.sinaimg.cn/mw690/005uLTuygw1etcup9vg4vj30nq0dcwib.jpg"));
-        mg.setBounds(10, 10, 200, 100);
+                    String line;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while ((line = br.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
 
-        ServerTile ic = new ServerTile("工业魔法", ResourcesManager.getImageFormURL("http://ww3.sinaimg.cn/mw690/005uLTuygw1euvlzjrp9dj30nq0dcjt9.jpg"));
-        ic.setBounds(10, 120, 200, 100);
+                    JSONObject object = new JSONObject(stringBuilder.toString());
+                    JSONArray array = (JSONArray) object.get("server-list");
+                    int servers = 0;
+                    for (; servers < array.length(); servers++) {
+                        JSONObject serverObj = (JSONObject) array.get(servers);
+                        String name = serverObj.getString("name");
+                        String imageURL = serverObj.getString("imageURL");
 
-        ServerTile gt = new ServerTile("格雷科技", ResourcesManager.getImageFormURL("http://ww4.sinaimg.cn/mw690/005uLTuygw1evboszt8nij311y0jm491.jpg"));
-        gt.setBounds(10, 230, 200, 100);
+                        ServerTile serverTile = new ServerTile(name, ResourcesManager.getImageFormURL(imageURL));
+                        serverListPanel.add(serverTile);
+                    }
 
-        panel.add(mg);
-        panel.add(ic);
-        panel.add(gt);
+                    System.out.println((100 + 5) * servers);
+                    serverListPanel.setPreferredSize(new Dimension(210, (100 + 5) * servers));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        getServerListThread.start();
+
+        //serverListPanel.setPreferredSize(new Dimension(210, 1000));
 
         /* ====Server List==== */
 
         //add item to container
         container.add(infoPanel);
-        container.add(serverListPanel);
+        container.add(scrollPane);
     }
 }

@@ -18,6 +18,7 @@ public class ServerTile extends JPanel {
         super();
         this.name = name;
         this.image = image;
+        this.setPreferredSize(new Dimension(200, 100));
     }
 
     @Override

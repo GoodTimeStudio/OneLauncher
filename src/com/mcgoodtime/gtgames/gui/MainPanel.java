@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import static com.mcgoodtime.gtgames.ResourcesManager.*;
 
@@ -82,7 +83,7 @@ public class MainPanel {
                 labUserFace.setIcon(new ImageIcon(image));
             }
         };
-        getUserFaceThread.start();
+        //getUserFaceThread.start();
 
         //user info
         JLabel labUserInfo = new JLabel();
@@ -122,103 +123,101 @@ public class MainPanel {
 
         infoPanel.add(labLaunch);
         infoPanel.add(labSetting);
-
         /* ====info panel===== */
 
-        /* Server List */
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(container.getWidth() - 220, 0, 220, container.getHeight() - 110);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.getViewport().setBackground(new Color(255, 255, 255, 50));
+        /* Server Panel */
+        JPanel sererPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(new Color(255, 255, 255, 100));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        sererPanel.setBounds(container.getWidth() - 220, 0, 220, container.getHeight() - 80);
+        sererPanel.setLayout(new BorderLayout());
+
+        JScrollPane scrollPane = new JScrollPane() {
+            @Override
+            protected void paintBorder(Graphics g) {}
+        };
         serverListPanel = new JPanel();
         serverListPanel.setLayout(new FlowLayout());
-        serverListPanel.setOpaque(false);
-        serverListPanel.setBackground(new Color(255, 255, 255, 50));
         scrollPane.setViewportView(serverListPanel);
-        Thread getServerListThread = new Thread() {
-            @Override
-            public void run() {
+
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        serverListPanel.setOpaque(false);
+        sererPanel.setOpaque(false);
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                URL url = new URL("http://mcgoodtime.com/mgl/server-list.json");
+                URL url2 = new URL("https://minecraft-goodtime.github.io/mgl/server-list.json");
+
+                InputStream in = null;
                 try {
-                    URL url = new URL("http://mcgoodtime.com/mgl/server-list.json");
-                    URL url2 = new URL("https://minecraft-goodtime.github.io/mgl/server-list.json");
-
-                    InputStream in = null;
-                    try {
-                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                        connection.setConnectTimeout(1500);
-                        in = connection.getInputStream();
-                    } catch (SocketException e) {
-                        e.printStackTrace();
-                        System.out.println("failed");
-                        HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
-                        connection2.setConnectTimeout(1500);
-                        in = connection2.getInputStream();
-                    }
-
-                    InputStreamReader isr = new InputStreamReader(in, "UTF-8");
-                    BufferedReader br = new BufferedReader(isr);
-
-                    String line;
-                    StringBuilder stringBuilder = new StringBuilder();
-                    while ((line = br.readLine()) != null) {
-                        stringBuilder.append(line);
-                    }
-
-                    JSONObject object = new JSONObject(stringBuilder.toString());
-                    JSONArray array = (JSONArray) object.get("server-list");
-                    serverListPanel.setPreferredSize(new Dimension(210, (100 + 5) * array.length()));
-
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject serverObj = (JSONObject) array.get(i);
-                        String name = serverObj.getString("name");
-                        String imageURL = serverObj.getString("imageURL");
-
-                        ServerTile serverTile = new ServerTile(name, getImageFormURL(imageURL));
-                        serverListPanel.add(serverTile);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setConnectTimeout(1500);
+                    in = connection.getInputStream();
+                } catch (Exception e) {
+                    System.out.println("Get server list failed, try again...");
+                    HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
+                    connection2.setConnectTimeout(1500);
+                    in = connection2.getInputStream();
                 }
-            }
-        };
-        getServerListThread.start();
-        /* ====Server List==== */
 
-        /* Server Players */
-        JPanel serverPlayersPanel = new JPanel();
-        serverPlayersPanel.setBackground(Color.black);
-        serverPlayersPanel.setBounds(container.getWidth() - 220, container.getHeight() - 110, 220, 30);
-        serverPlayersPanel.setLayout(new BorderLayout());
+                InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
 
-        JLabel labServerOnlinePlayers = new JLabel("在线人数:");
-
-        labServerOnlinePlayers.setFont(new Font("微软雅黑", Font.PLAIN, 20));
-        labServerOnlinePlayers.setForeground(new Color(46, 204, 204));
-        labServerOnlinePlayers.setIcon(new ImageIcon(ResourcesManager.steve.getScaledInstance(30, 30, Image.SCALE_DEFAULT)));
-
-        Thread getOnlinePlayersServerThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    ServerStatus status = new ServerStatus();
-                    status.setAddress(new InetSocketAddress("play.mcgoodtime.com", 25565));
-                    ServerStatus.StatusResponse response = status.fetchData();
-                    labServerOnlinePlayers.setText("在线人数:" + response.getPlayers());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String line;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    stringBuilder.append(line);
                 }
-            }
-        };
-        getOnlinePlayersServerThread.start();
 
-        serverPlayersPanel.add(labServerOnlinePlayers);
-        /* ====Server Players==== */
+                JSONObject object = new JSONObject(stringBuilder.toString());
+                JSONArray array = (JSONArray) object.get("server-list");
+                serverListPanel.setPreferredSize(new Dimension(210, (100 + 5) * array.length()));
+
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject serverObj = (JSONObject) array.get(i);
+                    String name = serverObj.getString("name");
+                    String imageURL = serverObj.getString("imageURL");
+
+                    ServerTile serverTile = new ServerTile(name, getImageFormURL(imageURL));
+                    serverListPanel.add(serverTile);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        JLabel labServerOnline = new JLabel();
+        labServerOnline.setText("在线人数:");
+        labServerOnline.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+        labServerOnline.setForeground(new Color(46, 204, 204));
+        labServerOnline.setIcon(new ImageIcon(ResourcesManager.steve.getScaledInstance(30, 30, Image.SCALE_DEFAULT)));
+        SwingUtilities.invokeLater(() -> {
+            ServerStatus status = new ServerStatus();
+            status.setAddress(new InetSocketAddress("play.mcgoodtime.com", 25565));
+            try {
+                labServerOnline.setText("在线人数:" + status.fetchData().getPlayers().getOnline());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        sererPanel.add("South", labServerOnline);
+        sererPanel.add(scrollPane);
+        /* ====Server Panel==== */
 
         //add item to container
         container.add(infoPanel);
-        container.add(scrollPane);
-        container.add(serverPlayersPanel);
+        container.add(sererPanel);
+        //container.add(scrollPane);
+        //container.add(serverPlayersPanel);
     }
+
 }

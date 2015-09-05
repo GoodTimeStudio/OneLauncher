@@ -17,17 +17,15 @@ public class MainWindow extends JFrame {
 	 * Launch the application.
 	 */
 	public static void initGui() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
-					new MainPanel();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+            try {
+                MainWindow frame = new MainWindow();
+                frame.setVisible(true);
+                new MainPanel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 	}
 
 	/*

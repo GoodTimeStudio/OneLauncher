@@ -1,4 +1,4 @@
-package com.mcgoodtime.gtgames;
+package com.mcgoodtime.gtgames.network;
 
 import com.google.gson.Gson;
 

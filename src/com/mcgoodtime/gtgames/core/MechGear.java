@@ -2,18 +2,15 @@ package com.mcgoodtime.gtgames.core;
 
 import com.mcgoodtime.gtgames.PlaybackListenerBase;
 import com.mcgoodtime.gtgames.ResourcesManager;
-import com.mcgoodtime.gtgames.ServerStatus;
 import com.mcgoodtime.gtgames.gui.MainWindow;
+import com.mcgoodtime.gtgames.network.Download;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import javax.swing.*;
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.util.Calendar;
 
-public class GT_Games extends JFrame implements Runnable {
+public class MechGear extends JFrame implements Runnable {
 
     public static final int VERSION_ID = 1;
     public static final String VERSION = "0.1";
@@ -24,14 +21,15 @@ public class GT_Games extends JFrame implements Runnable {
     protected static String latestVerName;
 
     public static void main(String[] args) {
+        Download.downloadFile("http://mgl.oss-cn-shenzhen.aliyuncs.com/InventoryTweaks-1.59-dev-152.jar");
         ResourcesManager.loadTexture();
-        GT_Games games = new GT_Games();
+        MechGear games = new MechGear();
 
         Thread backgroundMusicThread = new Thread() {
             @Override
             public void run() {
                 try {
-                    advPlayer = new AdvancedPlayer(GT_Games.class.getResourceAsStream("/sound/MobileOrchestra.mp3"));
+                    advPlayer = new AdvancedPlayer(MechGear.class.getResourceAsStream("/sound/MobileOrchestra.mp3"));
                     advPlayer.setPlayBackListener(new PlaybackListenerBase());
                     System.out.println(advPlayer.getPlayBackListener());
                     advPlayer.play();

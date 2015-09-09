@@ -1,11 +1,9 @@
 package com.mcgoodtime.gtgames.gui;
 
-import com.mcgoodtime.gjmlc.core.Launcher;
-import com.mcgoodtime.gjmlc.core.LibrariesManager;
 import com.mcgoodtime.gtgames.ResourcesManager;
-import com.mcgoodtime.gtgames.ServerStatus;
+import com.mcgoodtime.gtgames.network.ServerStatus;
 import com.mcgoodtime.gtgames.core.Auth;
-import com.mcgoodtime.gtgames.core.GT_Games;
+import com.mcgoodtime.gtgames.core.MechGear;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,9 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 import static com.mcgoodtime.gtgames.ResourcesManager.*;
 
@@ -87,7 +83,7 @@ public class MainPanel {
 
         //user info
         JLabel labUserInfo = new JLabel();
-        labUserInfo.setText(GT_Games.getHelloWord() + "," + "尊敬的" + Auth.getUsername());
+        labUserInfo.setText(MechGear.getHelloWord() + "," + "尊敬的" + Auth.getUsername());
         labUserInfo.setFont(new Font("微软雅黑", Font.PLAIN, 12));
         labUserInfo.setBounds(90, 0, 150, 30);
 

@@ -1,5 +1,6 @@
-package com.mcgoodtime.gtgames.core;
+package com.mcgoodtime.gtgames.network;
 
+import com.mcgoodtime.gtgames.core.MechGear;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -22,11 +23,11 @@ public class Update {
         //获取jsonObject中的ver
         int ver = jsonObject.getInt("ver");
         //判断最新版本是否大于目前版本
-        b = ver > GT_Games.VERSION_ID;
+        b = ver > MechGear.VERSION_ID;
 
         if (b) {
             String verName = jsonObject.getString("verName");
-            GT_Games.latestVerName = verName;
+            MechGear.latestVerName = verName;
             System.out.println("AutoUpdate:检测到有新版本,版本号"+verName);
             return false;
         } else {

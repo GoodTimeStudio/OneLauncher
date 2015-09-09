@@ -21,7 +21,8 @@ public class MainWindow extends JFrame {
             try {
                 MainWindow frame = new MainWindow();
                 frame.setVisible(true);
-                new MainPanel();
+                //new MainPanel();
+				new DownloadPanel();
             } catch (Exception e) {
                 e.printStackTrace();
             }

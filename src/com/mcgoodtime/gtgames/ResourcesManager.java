@@ -58,7 +58,7 @@ public class ResourcesManager {
 	public static Image getImageFormURL(String url) throws IOException {
 		URL url2 = new URL(url);
 		HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
-		connection2.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.1; Windows NT; DigExt)");
+		connection2.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
 		return ImageIO.read(connection2.getInputStream());
 	}
 }

@@ -1,82 +1,92 @@
 package com.mcgoodtime.gtgames.network;
 
-import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GetObjectRequest;
-import com.aliyun.oss.model.OSSObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class Download {
-    public static void downloadFile(String downloadURL) throws IOException {
-        int bytes = 0;
-        int byteread = 0;
 
-        URL url = new URL(downloadURL);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+    private HttpURLConnection connection;
+
+    private String fileName;
+    private URL downloadURL;
+    private long fileLength;
+
+    public Download(String downloadURL) throws IOException {
+        this.downloadURL = new URL(downloadURL);
+        this.fileName = downloadURL.substring(downloadURL.lastIndexOf("/") + 1);
+        this.connection = (HttpURLConnection) this.downloadURL.openConnection();
+        this.connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+
+        for (int i = 1;; i++) {
+            String header = this.connection.getHeaderFieldKey(i);
+            if (header != null) {
+                if (header.equals("Content-Length")) {
+                    this.fileLength = Integer.parseInt(connection.getHeaderField(header));
+                    break;
+                }
+            }
+        }
+    }
+
+    public void downloadFile(String savePath) throws IOException {
+        int byteRead;
+        byte[] buffer = new byte[1204];
+
+        if (savePath.isEmpty()) {
+            savePath = ".";
+        }
 
         InputStream inStream = connection.getInputStream();
-        FileOutputStream fs = new FileOutputStream("c:/abc.gif");
+        FileOutputStream fs = new FileOutputStream(savePath + "/" + fileName);
 
-        byte[] buffer = new byte[1204];
-        int length;
-        while ((byteread = inStream.read(buffer)) != -1) {
-            bytes += byteread;
-            fs.write(buffer, 0, byteread);
+        while ((byteRead = inStream.read(buffer)) != -1) {
+            fs.write(buffer, 0, byteRead);
         }
     }
 
-    //  获得文件长度
-    public static long getFileSize(String sURL) {
-        int nFileLength = -1;
-        try {
-            URL url = new URL(sURL);
-            HttpURLConnection httpConnection = (HttpURLConnection) url
-                    .openConnection();
-            httpConnection.setRequestProperty("User-Agent", "Internet Explorer");
-
-            int responseCode = httpConnection.getResponseCode();
-            if (responseCode >= 400) {
-                System.err.println("Error Code : " + responseCode);
-                return -2; // -2 represent access is error
-            }
-            String sHeader;
-            for (int i = 1;; i++) {
-                sHeader = httpConnection.getHeaderFieldKey(i);
-                if (sHeader != null) {
-                    if (sHeader.equals("Content-Length")) {
-                        nFileLength = Integer.parseInt(httpConnection
-                                .getHeaderField(sHeader));
-                        break;
-                    }
-                } else
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("AutoUpdate:FileLength:"+nFileLength);
-        return nFileLength;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void downloadFormOSS() throws IOException {
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setConnectionTimeout(5000);
-        conf.setMaxErrorRetry(3);
-        conf.setSocketTimeout(2000);
+    public URL getDownloadURL() {
+        return downloadURL;
+    }
 
-        OSSClient client = new OSSClient("https://mgl.oss-cn-shenzhen.aliyuncs.com", "oah6WPrpdnfnPlP9", "kLPqNfbTwEXuwMomHasN9EoZI1Ou9m");
-        OSSObject object = client.getObject("mgl", "oah6WPrpdnfnPlP9");
-        InputStream in = object.getObjectContent();
-        byte[] bytes = new byte[1024];
-        int i;
-        while ((i = in.read(bytes, 0, 1024)) > 0) {
+    public long getFileLength() {
+        return fileLength;
+    }
 
+    public static class OSSDownload {
+
+        private final String BUCKET_NAME = "mgl";
+        private String file;
+
+        private OSSClient client;
+        private long fileLength;
+
+        public OSSDownload(String file) {
+            client = new OSSClient("https://oss-cn-shenzhen.aliyuncs.com", "oah6WPrpdnfnPlP9", "kLPqNfbTwEXuwMomHasN9EoZI1Ou9m");
+            this.fileLength = client.getObjectMetadata(BUCKET_NAME, file).getContentLength();
+            this.file = file;
+        }
+
+        public void downloadFormOSS(String savePath) throws IOException {
+            GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, this.file);
+            if (savePath.isEmpty()) {
+                savePath = ".";
+            }
+            client.getObject(request, new File(savePath + "/" + this.file));
+        }
+
+        public long getFileLength() {
+            return this.fileLength;
         }
     }
 }

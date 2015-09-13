@@ -22,7 +22,8 @@ public class MainWindow extends JFrame {
                 MainWindow frame = new MainWindow();
                 frame.setVisible(true);
                 //new MainPanel();
-				new DownloadPanel();
+				new DownloadPanel("https://minecraft-goodtime.github.io/mgl/Verge(DownloadTest).flac", "").downloadFile("");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

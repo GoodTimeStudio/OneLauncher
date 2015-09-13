@@ -8,6 +8,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class MechGear extends JFrame implements Runnable {
@@ -21,9 +22,9 @@ public class MechGear extends JFrame implements Runnable {
     protected static String latestVerName;
 
     public static void main(String[] args) {
-        Download.downloadFile("http://mgl.oss-cn-shenzhen.aliyuncs.com/InventoryTweaks-1.59-dev-152.jar");
         ResourcesManager.loadTexture();
         MechGear games = new MechGear();
+
 
         Thread backgroundMusicThread = new Thread() {
             @Override

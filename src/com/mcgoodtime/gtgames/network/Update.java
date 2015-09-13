@@ -1,3 +1,4 @@
+/*
 package com.mcgoodtime.gtgames.network;
 
 import com.mcgoodtime.gtgames.core.MechGear;
@@ -10,12 +11,12 @@ import java.net.URLConnection;
 
 /**
  * Created by 豪 on 2015-04-06-0006.
- */
+ *//*
 public class Update {
 
     protected static String updateInfo;
 
-    /*  解析从服务器获取到的更新信息 */
+    /*  解析从服务器获取到的更新信息 *//*
     public static boolean isLatestVer() {
 
         JSONObject jsonObject = new JSONObject(updateInfo);
@@ -71,5 +72,5 @@ class GetVersionInfo extends Thread {
             e.printStackTrace();
         }
     }
-}
+}*/
 

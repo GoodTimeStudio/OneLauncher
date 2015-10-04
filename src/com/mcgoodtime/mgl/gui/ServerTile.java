@@ -1,8 +1,7 @@
-package com.mcgoodtime.gtgames.gui;
+package com.mcgoodtime.mgl.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.color.ColorSpace;
 
 /**
  * Created by suhao on 2015.8.22.0022.

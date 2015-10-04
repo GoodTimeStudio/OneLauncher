@@ -1,4 +1,4 @@
-package com.mcgoodtime.gtgames.core;
+package com.mcgoodtime.mgl.core;
 
 public class Auth {
 

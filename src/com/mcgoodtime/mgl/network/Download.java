@@ -1,4 +1,4 @@
-package com.mcgoodtime.gtgames.network;
+package com.mcgoodtime.mgl.network;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GetObjectRequest;
@@ -7,8 +7,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class Download {
 
@@ -35,12 +38,16 @@ public class Download {
         }
     }
 
+    public void downloadFile() throws IOException {
+        downloadFile(".");
+    }
+
     public void downloadFile(String savePath) throws IOException {
         int byteRead;
         byte[] buffer = new byte[1204];
 
         if (savePath.isEmpty()) {
-            savePath = ".";
+            throw new IOException("Unknown save location");
         }
 
         InputStream inStream = connection.getInputStream();
@@ -88,5 +95,17 @@ public class Download {
         public long getFileLength() {
             return this.fileLength;
         }
+    }
+
+    /**
+     *
+     * @param scale accuracy
+     * @return percentage
+     */
+    public static double getPercentageFormLong(long num, long total, int scale) {
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+        df.setMaximumFractionDigits(scale);
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        return num / total * 100;
     }
 }

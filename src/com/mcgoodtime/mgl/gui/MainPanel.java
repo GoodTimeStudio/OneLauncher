@@ -1,16 +1,15 @@
-package com.mcgoodtime.gtgames.gui;
+package com.mcgoodtime.mgl.gui;
 
-import com.mcgoodtime.gtgames.ResourcesManager;
-import com.mcgoodtime.gtgames.network.ServerStatus;
-import com.mcgoodtime.gtgames.core.Auth;
-import com.mcgoodtime.gtgames.core.MechGear;
+import com.mcgoodtime.mgl.ResourcesManager;
+import com.mcgoodtime.mgl.network.ServerStatus;
+import com.mcgoodtime.mgl.core.Auth;
+import com.mcgoodtime.mgl.core.MechGear;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,14 +18,14 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URL;
 
-import static com.mcgoodtime.gtgames.ResourcesManager.*;
+import static com.mcgoodtime.mgl.ResourcesManager.*;
 
 /**
  * Created by suhao on 2015.8.22.0022.
  *
  * @author suhao
  */
-public class MainPanel {
+public class MainPanel extends JPanel {
 
     protected static JPanel container;
 
@@ -66,26 +65,33 @@ public class MainPanel {
         //user photo
         JLabel labUserFace = new JLabel();
         labUserFace.setBounds(0, 0, 80, 80);
-        Thread getUserFaceThread = new Thread() {
-            @Override
-            public void run() {
-                Image image = null;
-                try {
-                    image = getImageFormURL("http://mcuuid.net/face/{player}.png".replace("{player}"
-                            , Auth.getUsername())).getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                labUserFace.setIcon(new ImageIcon(image));
+        SwingUtilities.invokeLater(() -> {
+            Image image = null;
+            try {
+                image = getImageFormURL("http://mcuuid.net/face/{player}.png".replace("{player}"
+                        , Auth.getUsername())).getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        };
-        //getUserFaceThread.start();
+            labUserFace.setIcon(new ImageIcon(image));
+        });
 
-        //user info
-        JLabel labUserInfo = new JLabel();
-        labUserInfo.setText(MechGear.getHelloWord() + "," + "尊敬的" + Auth.getUsername());
-        labUserInfo.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-        labUserInfo.setBounds(90, 0, 150, 30);
+        //username info
+        JLabel labUserName = new JLabel();
+        labUserName.setText("游戏名字");
+        labUserName.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        labUserName.setBounds(90, 0, 150, 30);
+
+        JTextField textUserName = new JTextField();
+        textUserName.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        textUserName.setBounds(90, 30, 150, 25);
+        textUserName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                Auth.setUsername(textUserName.getText() + e.getKeyChar());
+                System.out.println(Auth.getUsername());
+            }
+        });
 
         /* button */
         //launch button
@@ -109,13 +115,14 @@ public class MainPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 container.setVisible(false);
-                new SettingPanel();
+                new SettingPanel().setVisible(true);
             }
         });
 
         //add item to info panel
         infoPanel.add(labUserFace);
-        infoPanel.add(labUserInfo);
+        infoPanel.add(labUserName);
+        infoPanel.add(textUserName);
 
         infoPanel.add(labLaunch);
         infoPanel.add(labSetting);
@@ -212,8 +219,6 @@ public class MainPanel {
         //add item to container
         container.add(infoPanel);
         container.add(sererPanel);
-        //container.add(scrollPane);
-        //container.add(serverPlayersPanel);
     }
 
 }

@@ -1,6 +1,6 @@
-package com.mcgoodtime.gtgames.gui;
+package com.mcgoodtime.mgl.gui;
 
-import com.mcgoodtime.gtgames.ResourcesManager;
+import com.mcgoodtime.mgl.ResourcesManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,8 +21,8 @@ public class MainWindow extends JFrame {
             try {
                 MainWindow frame = new MainWindow();
                 frame.setVisible(true);
-                //new MainPanel();
-				new DownloadPanel("https://minecraft-goodtime.github.io/mgl/Verge(DownloadTest).flac", "").downloadFile("");
+                new MainPanel();
+				//new DownloadPanel("https://minecraft-goodtime.github.io/mgl/Verge(DownloadTest).flac", "").downloadFile("");
 
             } catch (Exception e) {
                 e.printStackTrace();

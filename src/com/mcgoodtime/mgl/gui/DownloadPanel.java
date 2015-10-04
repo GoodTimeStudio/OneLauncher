@@ -1,12 +1,9 @@
-package com.mcgoodtime.gtgames.gui;
+package com.mcgoodtime.mgl.gui;
 
-import com.mcgoodtime.gtgames.MathUtilities;
-import com.mcgoodtime.gtgames.network.Download;
+import com.mcgoodtime.mgl.network.Download;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -111,7 +108,7 @@ public class DownloadPanel {
         File file = new File(downloader.getFileName());
         Timer timer = new Timer(300, e -> {
             long localSize =  file.length();
-            value = (int) ((MathUtilities.getPercentageFormLong(localSize, fileLength, 1)) * 10);
+            value = (int) ((Download.getPercentageFormLong(localSize, fileLength, 1)) * 10);
             System.out.println("Progress: " + (value / 10) + "%");
             progressInfo.setText((value / 10) + "%");
             progressBar.setValue(value);

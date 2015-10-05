@@ -25,14 +25,13 @@ import static com.mcgoodtime.mgl.ResourcesManager.*;
  *
  * @author suhao
  */
-public class MainPanel extends JPanel {
+public class MainPanel {
 
     protected static JPanel container;
 
     private static JPanel serverListPanel;
 
     public MainPanel() {
-
         container = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -115,7 +114,7 @@ public class MainPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 container.setVisible(false);
-                new SettingPanel().setVisible(true);
+                new SettingPanel();
             }
         });
 

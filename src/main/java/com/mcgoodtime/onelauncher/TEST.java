@@ -1,4 +1,4 @@
-package com.mcgoodtime.mgl;
+package com.mcgoodtime.onelauncher;
 
 import java.io.File;
 import java.io.IOException;

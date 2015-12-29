@@ -1,6 +1,6 @@
-package com.mcgoodtime.mgl.audio;
+package com.mcgoodtime.onelauncher.audio;
 
-import com.mcgoodtime.mgl.ResourcesManager;
+import com.mcgoodtime.onelauncher.ResourcesManager;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 

@@ -1,4 +1,4 @@
-package com.mcgoodtime.mgl.network;
+package com.mcgoodtime.onelauncher.network;
 
 import com.google.gson.Gson;
 

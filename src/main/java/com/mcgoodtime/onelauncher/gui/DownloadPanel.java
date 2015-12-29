@@ -1,6 +1,6 @@
-package com.mcgoodtime.mgl.gui;
+package com.mcgoodtime.onelauncher.gui;
 
-import com.mcgoodtime.mgl.network.Download;
+import com.mcgoodtime.onelauncher.network.Download;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.mcgoodtime.mgl.gui;
+package com.mcgoodtime.onelauncher.gui;
 
 import javax.swing.*;
 import java.awt.*;

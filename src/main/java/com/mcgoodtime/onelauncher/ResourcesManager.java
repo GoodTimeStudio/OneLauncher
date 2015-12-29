@@ -1,4 +1,4 @@
-package com.mcgoodtime.mgl;
+package com.mcgoodtime.onelauncher;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

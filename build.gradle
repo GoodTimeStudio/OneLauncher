@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+def versionMajor = "1"
+def versionMinor = "0"
+version = versionMajor + "." + versionMinor + getBuildNumber()
+group= "com.mcgoodtime.onelauncher"
+archivesBaseName = "OneLauncher"
+
+compileJava.options.encoding = 'UTF-8'
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+dependencies {
+    compile fileTree(dir:'libs',include:"*.jar")
+}
+
+jar {
+    configurations.shade.copyRecursive().setTransitive(false).each { artifact ->
+        from (zipTree(artifact))
+    }
+
+    manifest {
+        attributes 'Implementation-Title': 'OneLauncher',
+                   'Implementation-Version': version
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+idea.workspace.iws.withXml { provider ->
+    //provider.asNode()
+}
+
+def getBuildNumber() {
+    return "$System.env.BUILD_NUMBER" != "null" ? "." + Integer.parseInt("$System.env.BUILD_NUMBER") : ""
+}

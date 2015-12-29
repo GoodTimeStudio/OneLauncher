@@ -1,6 +1,6 @@
-package com.mcgoodtime.mgl.network;
+package com.mcgoodtime.onelauncher.network;
 
-import com.mcgoodtime.mgl.core.MechGear;
+import com.mcgoodtime.onelauncher.core.MechGear;
 import org.json.JSONObject;
 
 import java.io.*;

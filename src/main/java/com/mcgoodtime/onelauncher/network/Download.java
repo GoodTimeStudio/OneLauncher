@@ -1,9 +1,5 @@
-package com.mcgoodtime.mgl.network;
+package com.mcgoodtime.onelauncher.network;
 
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.GetObjectRequest;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,33 +64,6 @@ public class Download {
 
     public long getFileLength() {
         return fileLength;
-    }
-
-    public static class OSSDownload {
-
-        private final String BUCKET_NAME = "mgl";
-        private String file;
-
-        private OSSClient client;
-        private long fileLength;
-
-        public OSSDownload(String file) {
-            client = new OSSClient("https://oss-cn-shenzhen.aliyuncs.com", "oah6WPrpdnfnPlP9", "kLPqNfbTwEXuwMomHasN9EoZI1Ou9m");
-            this.fileLength = client.getObjectMetadata(BUCKET_NAME, file).getContentLength();
-            this.file = file;
-        }
-
-        public void downloadFormOSS(String savePath) throws IOException {
-            GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, this.file);
-            if (savePath.isEmpty()) {
-                savePath = ".";
-            }
-            client.getObject(request, new File(savePath + "/" + this.file));
-        }
-
-        public long getFileLength() {
-            return this.fileLength;
-        }
     }
 
     /**

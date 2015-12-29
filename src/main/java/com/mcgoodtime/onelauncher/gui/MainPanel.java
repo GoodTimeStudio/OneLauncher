@@ -1,9 +1,8 @@
-package com.mcgoodtime.mgl.gui;
+package com.mcgoodtime.onelauncher.gui;
 
-import com.mcgoodtime.mgl.ResourcesManager;
-import com.mcgoodtime.mgl.network.ServerStatus;
-import com.mcgoodtime.mgl.core.Auth;
-import com.mcgoodtime.mgl.core.MechGear;
+import com.mcgoodtime.onelauncher.ResourcesManager;
+import com.mcgoodtime.onelauncher.network.ServerStatus;
+import com.mcgoodtime.onelauncher.core.Auth;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URL;
 
-import static com.mcgoodtime.mgl.ResourcesManager.*;
+import static com.mcgoodtime.onelauncher.ResourcesManager.*;
 
 /**
  * Created by suhao on 2015.8.22.0022.

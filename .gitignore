@@ -61,9 +61,16 @@ $RECYCLE.BIN/
 out/
 .idea/
 .settings/
-.minecraft/
+.gradle/
+run/
 
 *.log
 logs/
 asm/
 /bin/
+
+*.iml
+*.ipr
+*.iws
+
+

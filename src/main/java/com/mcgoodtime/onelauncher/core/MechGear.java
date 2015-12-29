@@ -1,9 +1,8 @@
-package com.mcgoodtime.mgl.core;
+package com.mcgoodtime.onelauncher.core;
 
-import com.mcgoodtime.mgl.ResourcesManager;
-import com.mcgoodtime.mgl.audio.MusicPlayer;
-import com.mcgoodtime.mgl.gui.MainWindow;
-import com.mcgoodtime.mgl.network.Update;
+import com.mcgoodtime.onelauncher.ResourcesManager;
+import com.mcgoodtime.onelauncher.audio.MusicPlayer;
+import com.mcgoodtime.onelauncher.gui.MainWindow;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import javax.swing.*;

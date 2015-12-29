@@ -1,4 +1,4 @@
-package com.mcgoodtime.mgl.core;
+package com.mcgoodtime.onelauncher.core;
 
 public class Auth {
 

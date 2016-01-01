@@ -35,7 +35,7 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow() {
 		setUndecorated(true);
-		setTitle("MechGear Games");
+		setTitle("OneLauncher Games");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 450);
 		mainPanel = new JPanel() {

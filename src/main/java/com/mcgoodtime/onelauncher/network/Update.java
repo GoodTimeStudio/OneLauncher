@@ -1,6 +1,6 @@
 package com.mcgoodtime.onelauncher.network;
 
-import com.mcgoodtime.onelauncher.core.MechGear;
+import com.mcgoodtime.onelauncher.core.OneLauncher;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -21,7 +21,7 @@ public class Update implements Runnable {
         boolean b;
 
         int ver = jsonObject.getInt("verID");
-        b = ver > MechGear.VERSION_ID;
+        b = ver > OneLauncher.VERSION_ID;
 
         if (b) {
             newVer = jsonObject.getString("verName");

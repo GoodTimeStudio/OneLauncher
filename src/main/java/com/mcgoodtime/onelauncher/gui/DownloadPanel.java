@@ -23,15 +23,6 @@ public class DownloadPanel {
     private int value;
 
     private Download downloader = null;
-    private Download.OSSDownload ossDownloader = null;
-
-    public DownloadPanel(String file) {
-        ossDownloader = new Download.OSSDownload(file);
-        this.fileName = file;
-        this.fileLength = ossDownloader.getFileLength();
-        System.out.println("FileLength: " + fileLength);
-        initGui();
-    }
 
     public DownloadPanel(String downloadURL, String savePath) throws IOException {
         downloader = new Download(downloadURL);
@@ -87,20 +78,6 @@ public class DownloadPanel {
             }
         }.start();
         System.out.println(downloader.getFileName());
-        updateProgress();
-    }
-
-    public void downloadFileFormOSS(String savePath) {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    ossDownloader.downloadFormOSS(savePath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
         updateProgress();
     }
 

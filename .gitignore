@@ -73,4 +73,9 @@ asm/
 *.ipr
 *.iws
 
+*.project
+*.classpath
+
+build/
+
 

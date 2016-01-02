@@ -10,13 +10,23 @@ archivesBaseName = "OneLauncher"
 
 compileJava.options.encoding = 'UTF-8'
 
+repositories {
+	mavenCentral()
+	maven {
+		url = 'https://dl.bintray.com/goodtimestudio/maven/'
+	}
+}
+
 configurations {
     shade
     compile.extendsFrom shade
 }
 
 dependencies {
-    compile fileTree(dir:'libs',include:"*.jar")
+    shade 'com.mcgoodtime.gjmlc:gjmlc:1.0.11'
+	shade 'com.google.code.gson:gson:2.5'
+	shade 'org.apache.commons:commons-lang3:3.4'
+	shade 'com.googlecode.soundlibs:jlayer:1.0.1-1'
 }
 
 jar {
